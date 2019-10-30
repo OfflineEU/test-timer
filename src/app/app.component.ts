@@ -10,7 +10,7 @@ import {Observable, Subscription} from 'rxjs';
 export class AppComponent {
 
   date: Date = new Date(0, 0, 0, 0, 0, 0);
-  start: Date = new Date(0, 0, 0, 0, 0, 5); //started timer value
+  start: Date = new Date(0, 0, 0, 0, 1, 0); //started timer value
   time: Date;
   streamInterval = 0;
   sub: Subscription;
