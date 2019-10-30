@@ -20,6 +20,7 @@
     <button
       class="btn"
       (click)="toggle()"
+      [disabled]="completed"
     ><span *ngIf="!started; else btnStop"
     >Start</span>
 
@@ -32,7 +33,7 @@
       class="btn"
       id="waitBtn"
       (click)="wait()"
-      [disabled]="isReset"
+      [disabled]="isReset || completed"
 
     >Wait
     </button>

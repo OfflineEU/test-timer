@@ -10,7 +10,7 @@ import {Observable, Subscription} from 'rxjs';
 export class AppComponent {
 
   date: Date = new Date(0, 0, 0, 0, 0, 0);
-  start: Date = new Date(0, 0, 0, 0, 1, 0); //started timer value
+  start: Date = new Date(0, 0, 0, 0, 0, 5); //started timer value
   time: Date;
   streamInterval = 0;
   sub: Subscription;
@@ -22,6 +22,7 @@ export class AppComponent {
   isReset = true;
 
   timer$: Observable<Date> = new Observable<Date>(obs => {
+      obs.next(this.start);
     this.streamInterval = setInterval(() => {
       this.time = new Date(this.start.setSeconds(this.start.getSeconds() - 1));
       obs.next(this.time);
@@ -75,10 +76,11 @@ export class AppComponent {
 
   //"Reset" button
   reset() {
+    this.completed = false;
     this.isReset = true;
     if (this.subscription) {
       this.date = new Date(0, 0, 0, 0, 0, 0,);
-      this.start = new Date(0, 0, 0, 0, 1, 0);
+      this.start = new Date(0, 0, 0, 0, 0, 5);
       this.sub.unsubscribe();
       clearInterval(this.streamInterval);
       this.subscription = false;
