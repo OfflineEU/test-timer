@@ -43,6 +43,10 @@ p {
     &:active {
       color: #000;
     }
+    &:disabled {
+      background-color: #ccc;
+      cursor: no-drop;
+    }
   }
 }
 

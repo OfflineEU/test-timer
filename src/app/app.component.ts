@@ -19,6 +19,7 @@ export class AppComponent {
   subscription = false;
   started = false;
   completed = false;
+  isReset = true;
 
   timer$: Observable<Date> = new Observable<Date>(obs => {
     this.streamInterval = setInterval(() => {
@@ -29,6 +30,7 @@ export class AppComponent {
 
   //"Start/Stop" button
   toggle() {
+    this.isReset = false;
     this.subscription = !this.subscription;
     if (this.subscription) {
       this.sub = this.timer$.subscribe(date => {
@@ -73,6 +75,7 @@ export class AppComponent {
 
   //"Reset" button
   reset() {
+    this.isReset = true;
     if (this.subscription) {
       this.date = new Date(0, 0, 0, 0, 0, 0,);
       this.start = new Date(0, 0, 0, 0, 1, 0);

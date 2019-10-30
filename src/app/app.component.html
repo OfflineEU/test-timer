@@ -6,21 +6,42 @@
 
 <div class="container">
 
-  <p *ngIf="!started; else subStart">{{date | date:'HH:mm:ss'}}</p>
+  <p *ngIf="!started; else subStart">
+    {{date | date:'HH:mm:ss'}}
+  </p>
   <ng-template #subStart>
-    <p>{{date | date:'HH:mm:ss'}}</p>
+    <p>
+      {{date | date:'HH:mm:ss'}}
+    </p>
   </ng-template>
   <p *ngIf="completed">Время вышло!</p>
-  <div class="control-block">
 
-    <button class="btn" (click)="toggle()">
-      <span *ngIf="!started; else btnStop">Start</span>
+  <div class="control-block">
+    <button
+      class="btn"
+      (click)="toggle()"
+    ><span *ngIf="!started; else btnStop"
+    >Start</span>
+
       <ng-template #btnStop>
         <span>Stop</span>
       </ng-template>
     </button>
-    <button class="btn" id="waitBtn" (click)="wait()">Wait</button>
-    <button class="btn" (click)="reset()">Reset</button>
+
+    <button
+      class="btn"
+      id="waitBtn"
+      (click)="wait()"
+      [disabled]="isReset"
+
+    >Wait
+    </button>
+
+    <button
+      class="btn"
+      (click)="reset()"
+    >Reset
+    </button>
   </div>
 
 </div>
