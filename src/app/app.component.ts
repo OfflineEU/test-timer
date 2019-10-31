@@ -1,5 +1,6 @@
-import {Component} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {fromEvent, interval, Observable, Subscription} from 'rxjs';
+import {buffer, debounceTime, filter, map} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -7,25 +8,24 @@ import {Observable, Subscription} from 'rxjs';
   styleUrls: ['./app.component.scss'],
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   date: Date = new Date(0, 0, 0, 0, 0, 0);
-  start: Date = new Date(0, 0, 0, 0, 1, 0); //started timer value
+  start: Date = new Date(0, 0, 0, 0, 1, 0);
   time: Date;
   streamInterval = 0;
   sub: Subscription;
-  clickCounter = 0;
-  singleClickTimeout = 0;
   subscription = false;
   started = false;
   completed = false;
   isReset = true;
 
   timer$: Observable<Date> = new Observable<Date>(obs => {
-      obs.next(this.start);
+    obs.next(this.start);
     this.streamInterval = setInterval(() => {
       this.time = new Date(this.start.setSeconds(this.start.getSeconds() - 1));
       obs.next(this.time);
+
     }, 1000);
   });
 
@@ -52,26 +52,25 @@ export class AppComponent {
   }
 
   //"Wait" button
-  wait() {
-    this.clickCounter++;
-    if (this.clickCounter >= 2) {
-      this.clickCounter = 0;
-      clearTimeout(this.singleClickTimeout);
-      this.waitStop();
-    } else if (this.clickCounter === 1) {
-      let singleClick = () => {
-        this.clickCounter = 0;
-      };
-      this.singleClickTimeout = setTimeout(singleClick, 300);
-    }
-  }
-
-  waitStop() {
-    this.subscription = false;
-    this.started = false;
-    this.start = new Date(this.date);
-    this.sub.unsubscribe();
-    clearInterval(this.streamInterval);
+  ngOnInit() {
+    const dblClickSpeed$ = fromEvent(document.getElementById('waitBtn'), 'click')
+      .pipe(
+        debounceTime(300),
+      );
+    const dblClick$ = fromEvent(document.getElementById('waitBtn'), 'click')
+      .pipe(
+        buffer(dblClickSpeed$),
+        map(clickArr => {
+          return clickArr.length;
+        }),
+        filter(clickAmount => clickAmount > 1),
+      );
+    dblClick$.subscribe(() => {
+      this.subscription = false;
+      this.started = false;
+      this.sub.unsubscribe();
+      clearInterval(this.streamInterval);
+    });
   }
 
   //"Reset" button
