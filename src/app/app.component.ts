@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {fromEvent, interval, Observable, Subscription} from 'rxjs';
-import {buffer, debounceTime, filter, map} from 'rxjs/operators';
+import {fromEvent, Observable, Subscription} from 'rxjs';
+import {buffer, debounceTime, filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -54,16 +54,14 @@ export class AppComponent implements OnInit {
   //"Wait" button
   ngOnInit() {
     const dblClickSpeed$ = fromEvent(document.getElementById('waitBtn'), 'click')
-      .pipe(
-        debounceTime(300),
-      );
+      .pipe(debounceTime(300));
     const dblClick$ = fromEvent(document.getElementById('waitBtn'), 'click')
       .pipe(
         buffer(dblClickSpeed$),
-        map(clickArr => {
-          return clickArr.length;
-        }),
-        filter(clickAmount => clickAmount > 1),
+        // if need certain number of clicks
+        filter(clickArr => clickArr.length === 2),
+        // of if more then single click is required
+        // filter(clickArr => clickArr.length > 1),
       );
     dblClick$.subscribe(() => {
       this.subscription = false;
