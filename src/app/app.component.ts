@@ -4,7 +4,7 @@ import {Observable, Subscription} from 'rxjs';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 
 export class AppComponent {
@@ -80,7 +80,7 @@ export class AppComponent {
     this.isReset = true;
     if (this.subscription) {
       this.date = new Date(0, 0, 0, 0, 0, 0,);
-      this.start = new Date(0, 0, 0, 0, 0, 5);
+      this.start = new Date(0, 0, 0, 0, 1, 0);
       this.sub.unsubscribe();
       clearInterval(this.streamInterval);
       this.subscription = false;
