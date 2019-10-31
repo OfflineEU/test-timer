@@ -58,9 +58,9 @@ export class AppComponent implements OnInit {
     const dblClick$ = fromEvent(document.getElementById('waitBtn'), 'click')
       .pipe(
         buffer(dblClickSpeed$),
-        // if need certain number of clicks
+        // if need certain number of clicks:
         filter(clickArr => clickArr.length === 2),
-        // of if more then single click is required
+        // of if more then single click is required:
         // filter(clickArr => clickArr.length > 1),
       );
     dblClick$.subscribe(() => {
